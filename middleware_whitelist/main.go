@@ -8,23 +8,25 @@ import (
 
 func IPAuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Set("example","123456")
-		ipList:=[]string{
+		c.Set("example", "123456")
+		//白名单ip数组
+		ipList := []string{
 			"127.0.0.1",
 		}
-		isMatched:=false
+		isMatched := false
 		for _, host := range ipList {
 			if c.ClientIP() == host {
 				isMatched = true
 			}
 		}
-		if !isMatched{
-			c.String(200,fmt.Sprintf("%v, not in iplist", c.ClientIP()))
+		if !isMatched {
+			c.String(200, fmt.Sprintf("%v, not in iplist", c.ClientIP()))
 			c.Abort()
 		}
 	}
 }
 
+//自定义中间件
 func main() {
 	r := gin.New()
 	r.Use(IPAuthMiddleware())

@@ -12,8 +12,10 @@ import (
 	"time"
 )
 
+//优雅关停服务
 func main() {
 	router := gin.Default()
+	//设置路由
 	router.GET("/", func(c *gin.Context) {
 		time.Sleep(5 * time.Second)
 		fmt.Println("Welcome Gin Server")
@@ -26,13 +28,13 @@ func main() {
 	}
 
 	go func() {
-		// service connections
+		// service connections    ListenAndServe 不阻塞
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("listen: %s\n", err)
 		}
 	}()
 
-	quit:=make(chan os.Signal)
+	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 	log.Println("Shutdown Server ...")

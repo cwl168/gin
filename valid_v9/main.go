@@ -8,8 +8,8 @@ import (
 	"github.com/go-playground/locales/zh_Hant_TW"
 	"github.com/go-playground/universal-translator"
 	"gopkg.in/go-playground/validator.v9"
-	zh_translations "gopkg.in/go-playground/validator.v9/translations/zh"
 	en_translations "gopkg.in/go-playground/validator.v9/translations/en"
+	zh_translations "gopkg.in/go-playground/validator.v9/translations/zh"
 	zh_tw_translations "gopkg.in/go-playground/validator.v9/translations/zh_tw"
 )
 
@@ -24,6 +24,9 @@ type User struct {
 	Tagline2 string `form:"tag_line2" validate:"required,gt=1"`
 }
 
+//多语言翻译验证
+//curl "localhost:8080/testing"  curl "localhost:8080/testing?locale=en"
+//[]string{"Username为必填字段", "Tagline为必填字段", "Tagline2为必填字段"}
 func main() {
 	en := en.New()
 	zh := zh.New()
@@ -39,7 +42,7 @@ func main() {
 
 func startPage(c *gin.Context) {
 	//这部分应放到中间件中
-	locale:=c.DefaultQuery("locale","zh")
+	locale := c.DefaultQuery("locale", "zh")
 	trans, _ := Uni.GetTranslator(locale)
 	switch locale {
 	case "zh":
@@ -71,11 +74,11 @@ func startPage(c *gin.Context) {
 	err := Validate.Struct(user)
 	if err != nil {
 		errs := err.(validator.ValidationErrors)
-		sliceErrs:=[]string{}
+		sliceErrs := []string{}
 		for _, e := range errs {
-			sliceErrs=append(sliceErrs,e.Translate(trans))
+			sliceErrs = append(sliceErrs, e.Translate(trans))
 		}
-		c.String(200,fmt.Sprintf("%#v",sliceErrs))
+		c.String(200, fmt.Sprintf("%#v", sliceErrs))
 	}
-	c.String(200, fmt.Sprintf("%#v",""))
+	c.String(200, fmt.Sprintf("%#v", ""))
 }

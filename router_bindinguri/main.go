@@ -2,12 +2,13 @@ package main
 
 import "github.com/gin-gonic/gin"
 
-type Person struct{
-	ID string `uri:"id" binding:"required"`
+type Person struct {
+	ID   string `uri:"id" binding:"required"`
 	Name string `uri:"name" binding:"required"`
 }
 
-func main()  {
+//绑定uri
+func main() {
 	route := gin.Default()
 	route.GET("/:name/:id", func(c *gin.Context) {
 		var person Person

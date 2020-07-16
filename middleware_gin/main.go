@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+//自定义中间件
 func Logger() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		t := time.Now()
@@ -30,12 +31,12 @@ func Logger() gin.HandlerFunc {
 
 func main() {
 	r := gin.Default()
-
+	//使用Logger中间件
 	r.Use(Logger())
 
 	r.GET("/test", func(c *gin.Context) {
 		example := c.MustGet("example").(string)
-		panic("request err")
+		//panic("request err")
 		// it would print: "12345"
 		log.Println(example)
 	})

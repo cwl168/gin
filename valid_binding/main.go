@@ -13,6 +13,8 @@ type Person struct {
 	Birthday time.Time `form:"birthday" time_format:"2006-01-02" time_utc:"1"`
 }
 
+//验证请求参数 - 结构体验证
+//curl -X GET 'http://localhost:8085/testing?name=cwl&address=sh&age=12&birthday=2020-01-04'
 func main() {
 	route := gin.Default()
 	route.GET("/testing", startPage)
