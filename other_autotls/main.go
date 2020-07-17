@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+//自动化证书配置
 func main() {
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
